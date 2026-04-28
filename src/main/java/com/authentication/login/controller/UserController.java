@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -26,6 +26,18 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
         LoginResponse response = userService.login(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<String> userHello() {
+        String response = userService.userHello();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/admin")
+    public ResponseEntity<String> adminHello() {
+        String response = userService.adminHello();
         return ResponseEntity.ok(response);
     }
 }

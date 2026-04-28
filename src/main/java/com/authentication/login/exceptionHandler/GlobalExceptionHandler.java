@@ -81,6 +81,18 @@ public class GlobalExceptionHandler {
     }
 
     // ----------------------------------------------------------------
+    // 403 Forbidden Error
+    // ----------------------------------------------------------------
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenException(
+             ForbiddenException ex , HttpServletRequest request) {
+        log.error("Forbidden error at {}: {}", request.getRequestURI(), ex.getMessage(), ex);
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Forbidden Error",
+                "You are forbidden to enter this Url.", request.getRequestURI(), null);
+    }
+
+
+    // ----------------------------------------------------------------
     // 500 INTERNAL SERVER ERROR — anything else unexpected
     // ----------------------------------------------------------------
     @ExceptionHandler(Exception.class)

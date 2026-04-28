@@ -1,5 +1,6 @@
 package com.authentication.login.responses;
 
+import com.authentication.login.enums.Role;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,4 +13,5 @@ public class LoginResponse {
     private long expiresInMs;
     private String email;
     private String userId;
+    private Role role;
 }
