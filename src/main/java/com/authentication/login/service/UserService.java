@@ -11,6 +11,7 @@ import com.authentication.login.requests.RegisterRequest;
 import com.authentication.login.responses.LoginResponse;
 import com.authentication.login.responses.RegisterResponse;
 import com.authentication.login.server.JwtServerClient;
+import com.authentication.login.server.WeatherServerClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserService {
     private final UserRepository userRepository;
     private final JwtServerClient jwtServerClient;
+    private final WeatherServerClient weatherServerClient;
 
     public RegisterResponse register(RegisterRequest registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
@@ -99,5 +101,19 @@ public class UserService {
         }
 
         return "Hello, " + user.getEmail();
+    }
+
+    public WeatherServerClient.WeatherResult getWeather(String city) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException(email));
+
+        if (user.getRole() != Role.USER) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Access denied. This endpoint is for Users only.");
+        }
+
+        log.info("Get Weather for city {}", city);
+        return weatherServerClient.getWeather(city);
     }
 }

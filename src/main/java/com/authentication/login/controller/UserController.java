@@ -4,6 +4,7 @@ import com.authentication.login.requests.LoginRequest;
 import com.authentication.login.requests.RegisterRequest;
 import com.authentication.login.responses.LoginResponse;
 import com.authentication.login.responses.RegisterResponse;
+import com.authentication.login.server.WeatherServerClient;
 import com.authentication.login.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,5 +40,11 @@ public class UserController {
     public ResponseEntity<String> adminHello() {
         String response = userService.adminHello();
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/weather")
+    public ResponseEntity<?> getWeather(@RequestParam(defaultValue = "Dhaka") String city){
+        WeatherServerClient.WeatherResult result = userService.getWeather(city);
+        return ResponseEntity.ok(result);
     }
 }

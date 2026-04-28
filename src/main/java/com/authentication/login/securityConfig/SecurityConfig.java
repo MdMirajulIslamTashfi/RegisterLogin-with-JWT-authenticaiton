@@ -23,7 +23,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/register", "/api/login").permitAll()
                         .requestMatchers("/h2-console/**").permitAll() // allow H2 browser console
                         .requestMatchers("/api/admin").hasRole("ADMIN")
-                        .requestMatchers("/api/user").hasRole("USER")
+                        .requestMatchers("/api/user", "/api/weather").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .headers(headers -> headers
